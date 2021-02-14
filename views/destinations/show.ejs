@@ -1,0 +1,19 @@
+<% layout('layouts/boilerplate') %>
+    <h1>
+        <%= destination.title %>
+    </h1>
+    <h2>
+        <%= destination.location %>
+    </h2>
+    <p>
+        <a href="/destinations/<%=destination._id%>/edit">Edit</a>
+    </p>
+    <p>
+    <form action="/destinations/<%=destination._id%>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
+    </p>
+    <footer>
+
+        <a href="/destinations">All Destinations</a>
+    </footer>
