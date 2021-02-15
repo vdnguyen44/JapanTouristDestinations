@@ -1,14 +1,44 @@
 <% layout('layouts/boilerplate') %>
-    <h1>Edit Destination</h1>
-    <form action="/destinations/<%=destination._id%>?_method=PUT" method="POST">
-        <div>
-            <label for="title">Title</label>
-            <input type="text" id="title" name="destination[title]" value="<%=destination.title %>">
+
+
+    <div class="row">
+        <h1 class="text-center">Edit Destination</h1>
+        <div class="col-6 offset-3">
+            <form action="/destinations/<%=destination._id%>?_method=PUT" method="POST">
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="destination[title]"
+                        value="<%=destination.title %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control" type="text" id="location" name="destination[location]"
+                        value="<%=destination.location %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Image URL</label>
+                    <input class="form-control" type="text" id="image" name="destination[image]"
+                        value="<%=destination.image %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="admissionfee">Admission Fee</label>
+
+                    <div class="input-group">
+                        <span class="input-group-text" id="admissionfee-label">¥</span>
+                        <input type="text" class="form-control" id="admissionfee" placeholder="0"
+                            aria-label="Admission Fee" aria-describedby="admissionfee-label"
+                            name="destination[admissionfee]" value="<%=destination.admissionfee %>">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" id="description"
+                        name="destination[description]"><%= destination.description%></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-info">Update Destination</button>
+                </div>
+            </form>
+            <a href="/destinations/<%= destination._id%>">Back to Destinations</a>
         </div>
-        <div>
-            <label for="location">Location</label>
-            <input type="text" id="location" name="destination[location]" value="<%=destination.location %>">
-        </div>
-        <button>Update Destination</button>
-    </form>
-    <a href="/destinations/<%= destination._id%>">Back to Destinations</a>
+    </div>

@@ -23,13 +23,13 @@ const seedDB = async () => {
     await Destination.deleteMany({});
     for (let i = 0; i < 50; i++) {
         const random16 = Math.floor(Math.random() * 16);
-        const admissionFee = Math.floor(Math.random() * 2000) + 1000;
+        const admissionfee = Math.floor(Math.random() * 2000) + 1000;
         const site = new Destination({
             location: `${destinations[random16].city}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             image: 'https://source.unsplash.com/collection/10458133',
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat nisi delectus nostrum rem quasi, id iusto, asperiores eligendi reprehenderit ut minus enim ipsa officia consectetur nihil non quo autem dolor. Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat nisi delectus nostrum rem quasi, id iusto, asperiores eligendi reprehenderit ut minus enim ipsa officia consectetur nihil non quo autem dolor.',
-            admissionFee
+            admissionfee
         })
         await site.save();
     }
