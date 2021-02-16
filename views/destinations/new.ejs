@@ -2,18 +2,18 @@
     <div class="row">
         <h1 class="text-center">New Destination</h1>
         <div class="col-6 offset-3">
-            <form action="/destinations" method="POST">
+            <form action="/destinations" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
-                    <input class="form-control" type="text" id="title" name="destination[title]">
+                    <input class="form-control" type="text" id="title" name="destination[title]" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
-                    <input class="form-control" type="text" id="location" name="destination[location]">
+                    <input class="form-control" type="text" id="location" name="destination[location]" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="destination[image]">
+                    <input class="form-control" type="text" id="image" name="destination[image]" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="admissionfee">Admission Fee</label>
@@ -22,13 +22,13 @@
                         <span class="input-group-text" id="admissionfee-label">¥</span>
                         <input type="text" class="form-control" id="admissionfee" placeholder="0"
                             aria-label="Admission Fee" aria-describedby="admissionfee-label"
-                            name="destination[admissionfee]">
+                            name="destination[admissionfee]" required>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description"
-                        name="destination[description]"></textarea>
+                    <textarea class="form-control" type="text" id="description" name="destination[description]"
+                        required></textarea>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Add Destination</button>
