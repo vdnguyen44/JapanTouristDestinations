@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const catchAsync = require('./utilities/catchAsync');
 const methodOverride = require('method-override');
 const Destination = require('./models/destination');
 
@@ -53,11 +54,11 @@ app.get('/destinations/new', (req, res) => {
     res.render('destinations/new');
 })
 // ?
-app.post('/destinations', async (req, res) => {
+app.post('/destinations', catchAsync(async (req, res) => {
     const destination = new Destination(req.body.destination);
     await destination.save();
     res.redirect(`/destinations/${destination._id}`)
-})
+}))
 
 app.get('/destinations/:id', async (req, res) => {
     const destination = await Destination.findById(req.params.id);
@@ -80,6 +81,11 @@ app.delete('/destinations/:id', async (req, res) => {
     await Destination.findByIdAndDelete(id);
     res.redirect('/destinations');
 })
+
+app.use((err, req, res, next) => {
+    res.send("Something went wrong!");
+})
+
 app.listen(3000, () => {
     console.log('Serving on port 3000');
 })
