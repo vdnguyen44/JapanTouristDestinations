@@ -3,7 +3,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const { destinationSchema } = require('./schemas.js');
 const catchAsync = require('./utilities/catchAsync');
+const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
 const Destination = require('./models/destination');
 
@@ -39,51 +41,71 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+const validateDestination = (req, res, next) => {
+    const { error } = destinationSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
 
 // route definition
 app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/destinations', async (req, res) => {
+app.get('/destinations', catchAsync(async (req, res) => {
     const destinations = await Destination.find({});
     res.render('destinations/index', { destinations })
-})
+}))
 
 app.get('/destinations/new', (req, res) => {
     res.render('destinations/new');
 })
-// ?
-app.post('/destinations', catchAsync(async (req, res) => {
+
+app.post('/destinations', validateDestination, catchAsync(async (req, res) => {
+    // if (!req.body.destination) throw new ExpressError('Invalid Destination Data', 400);
     const destination = new Destination(req.body.destination);
     await destination.save();
     res.redirect(`/destinations/${destination._id}`)
 }))
 
-app.get('/destinations/:id', async (req, res) => {
+app.get('/destinations/:id', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id);
     res.render('destinations/show', { destination });
-})
+}))
 
-app.get('/destinations/:id/edit', async (req, res) => {
+app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id);
     res.render('destinations/edit', { destination });
-})
+}))
 
-app.put('/destinations/:id', async (req, res) => {
+app.put('/destinations/:id', validateDestination, catchAsync(async (req, res) => {
     const { id } = req.params;
     const destination = await Destination.findByIdAndUpdate(id, { ...req.body.destination });
     res.redirect(`/destinations/${destination._id}`)
-})
+}))
 
-app.delete('/destinations/:id', async (req, res) => {
+app.delete('/destinations/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Destination.findByIdAndDelete(id);
     res.redirect('/destinations');
+}))
+
+// * = every path, only runs if no other route is matched first
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404));
 })
 
+// destructure statusCode and message from error passed in
 app.use((err, req, res, next) => {
-    res.send("Something went wrong!");
+    const { statusCode = 500 } = err;
+    if (!err.message) {
+        err.message = "Something went wrong";
+    }
+    res.status(statusCode).render('error', { err });
 })
 
 app.listen(3000, () => {
