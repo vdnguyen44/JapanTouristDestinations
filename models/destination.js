@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Review = require('./review');
 const Schema = mongoose.Schema;
 
 const DestinationSchema = new Schema({
@@ -14,6 +15,16 @@ const DestinationSchema = new Schema({
         }
     ]
 });
+
+DestinationSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Review.deleteMany({
+            _id: {
+                $in: doc.reviews
+            }
+        })
+    }
+})
 
 //Turns schema into model, a model is a class with which we construct documents, every document will be a destination with the specified properties
 module.exports = mongoose.model('Destination', DestinationSchema);
