@@ -3,12 +3,11 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { destinationSchema, reviewSchema } = require('./schemas.js');
-const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
-const Destination = require('./models/destination');
-const Review = require('./models/review');
+
+const destinations = require('./routes/destinations');
+const reviews = require('./routes/reviews');
 
 // minimum needed to connect japan-travel-destinations db running locally to default port 27017
 mongoose.connect('mongodb://localhost:27017/japan-travel-destinations',
@@ -42,87 +41,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-const validateDestination = (req, res, next) => {
-    const { error } = destinationSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
-
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
+app.use('/destinations', destinations);
+app.use('/destinations/:id/reviews', reviews);
 
 // route definition
 app.get('/', (req, res) => {
     res.render('home')
 })
-
-app.get('/destinations', catchAsync(async (req, res) => {
-    const destinations = await Destination.find({});
-    res.render('destinations/index', { destinations })
-}))
-
-app.get('/destinations/new', (req, res) => {
-    res.render('destinations/new');
-})
-
-app.post('/destinations', validateDestination, catchAsync(async (req, res) => {
-    // if (!req.body.destination) throw new ExpressError('Invalid Destination Data', 400);
-    const destination = new Destination(req.body.destination);
-    await destination.save();
-    res.redirect(`/destinations/${destination._id}`)
-}))
-
-app.get('/destinations/:id', catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id).populate('reviews');
-    // console.log(destination);
-    res.render('destinations/show', { destination });
-}))
-
-app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id);
-    res.render('destinations/edit', { destination });
-}))
-
-app.put('/destinations/:id', validateDestination, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const destination = await Destination.findByIdAndUpdate(id, { ...req.body.destination });
-    res.redirect(`/destinations/${destination._id}`)
-}))
-
-app.delete('/destinations/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Destination.findByIdAndDelete(id);
-    res.redirect('/destinations');
-}))
-
-app.post('/destinations/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id);
-    const review = new Review(req.body.review);
-    destination.reviews.push(review);
-    await review.save();
-    await destination.save();
-    res.redirect(`/destinations/${destination._id}`);
-}))
-
-app.delete('/destinations/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Destination.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
-    await Review.findByIdAndDelete(req.params.reviewId);
-    res.redirect(`/destinations/${id}`);
-}))
-
-
 
 // * = every path, only runs if no other route is matched first
 app.all('*', (req, res, next) => {
