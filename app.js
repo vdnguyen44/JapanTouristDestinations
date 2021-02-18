@@ -82,6 +82,10 @@ app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
     res.render('destinations/edit', { destination });
 }))
 
+app.post('/destinations/:id/reviews', catchAsync(async (req, res) => {
+    res.send("You made it");
+}))
+
 app.put('/destinations/:id', validateDestination, catchAsync(async (req, res) => {
     const { id } = req.params;
     const destination = await Destination.findByIdAndUpdate(id, { ...req.body.destination });

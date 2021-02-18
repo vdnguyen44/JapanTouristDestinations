@@ -6,7 +6,13 @@ const DestinationSchema = new Schema({
     image: String,
     admissionfee: Number,
     description: String,
-    location: String
+    location: String,
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
 });
 
 //Turns schema into model, a model is a class with which we construct documents, every document will be a destination with the specified properties
