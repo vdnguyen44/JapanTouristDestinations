@@ -8,6 +8,7 @@ const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
 const Destination = require('./models/destination');
+const Review = require('./models/review');
 
 // minimum needed to connect japan-travel-destinations db running locally to default port 27017
 mongoose.connect('mongodb://localhost:27017/japan-travel-destinations',
@@ -83,7 +84,12 @@ app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
 }))
 
 app.post('/destinations/:id/reviews', catchAsync(async (req, res) => {
-    res.send("You made it");
+    const destination = await Destination.findById(req.params.id);
+    const review = new Review(req.body.review);
+    destination.reviews.push(review);
+    await review.save();
+    await destination.save();
+    res.redirect(`/destinations/${destination._id}`);
 }))
 
 app.put('/destinations/:id', validateDestination, catchAsync(async (req, res) => {
