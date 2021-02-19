@@ -29,6 +29,7 @@ router.post('/', validateDestination, catchAsync(async (req, res) => {
     // if (!req.body.destination) throw new ExpressError('Invalid Destination Data', 400);
     const destination = new Destination(req.body.destination);
     await destination.save();
+    req.flash('success', 'Successfully made a new destination!');
     res.redirect(`/destinations/${destination._id}`)
 }))
 
