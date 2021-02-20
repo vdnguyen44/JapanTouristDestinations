@@ -7,9 +7,13 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utilities/ExpressError');
 const methodOverride = require('method-override');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
-const destinations = require('./routes/destinations');
-const reviews = require('./routes/reviews');
+const destinationRoutes = require('./routes/destinations');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
 
 // minimum needed to connect japan-travel-destinations db running locally to default port 27017
 mongoose.connect('mongodb://localhost:27017/japan-travel-destinations',
@@ -40,7 +44,7 @@ app.set('view engine', 'ejs');
 // set directory where templates are located
 app.set('views', path.join(__dirname, 'views'));
 
-// anything inside 'use' runs
+// anything inside 'use' runs, parses request body
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -58,14 +62,24 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
-app.use('/destinations', destinations);
-app.use('/destinations/:id/reviews', reviews);
+
+
+app.use('/destinations', destinationRoutes);
+app.use('/destinations/:id/reviews', reviewRoutes);
+app.use('/', userRoutes);
 
 // route definition
 app.get('/', (req, res) => {
