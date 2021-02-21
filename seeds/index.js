@@ -25,6 +25,7 @@ const seedDB = async () => {
         const random16 = Math.floor(Math.random() * 16);
         const admissionfee = Math.floor(Math.random() * 2000) + 1000;
         const site = new Destination({
+            author: '6030ce331c53dc2d50443d8d',
             location: `${destinations[random16].city}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             image: 'https://source.unsplash.com/collection/10458133',
