@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 // Import express module and create express application. Object app has methods for routing HTTP requests, configuring middleware, etc.
 const express = require('express');
 const path = require('path');

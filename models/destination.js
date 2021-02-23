@@ -4,7 +4,12 @@ const Schema = mongoose.Schema;
 
 const DestinationSchema = new Schema({
     title: String,
-    image: String,
+    images: [
+        {
+            url: String,
+            filename: String
+        }
+    ],
     admissionfee: Number,
     description: String,
     location: String,

@@ -11,8 +11,10 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createDestination = async (req, res) => {
     const destination = new Destination(req.body.destination);
+    destination.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     destination.author = req.user._id;
     await destination.save();
+    console.log(destination);
     req.flash('success', 'Successfully made a new destination!');
     res.redirect(`/destinations/${destination._id}`)
 }
@@ -44,6 +46,9 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateDestination = async (req, res) => {
     const { id } = req.params;
     const destination = await Destination.findByIdAndUpdate(id, { ...req.body.destination });
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    destination.images.push(...imgs);
+    await destination.save();
     req.flash('success', 'Successfully updated destination!');
     res.redirect(`/destinations/${destination._id}`)
 }

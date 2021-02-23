@@ -5,7 +5,7 @@
         <h1 class="text-center">Edit Destination</h1>
         <div class="col-6 offset-3">
             <form action="/destinations/<%=destination._id%>?_method=PUT" method="POST" novalidate
-                class="validated-form">
+                class="validated-form" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="destination[title]" required
@@ -15,11 +15,6 @@
                     <label class="form-label" for="location">Location</label>
                     <input class="form-control" type="text" id="location" name="destination[location]" required
                         value="<%=destination.location %>">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="destination[image]" required
-                        value="<%=destination.image %>">
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="admissionfee">Admission Fee</label>
@@ -35,6 +30,10 @@
                     <label class="form-label" for="description">Description</label>
                     <textarea class="form-control" type="text" id="description" name="destination[description]"
                         required><%= destination.description%></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image(s)</label>
+                    <input class="form-control" type="file" id="image" name="image" multiple>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-info">Update Destination</button>

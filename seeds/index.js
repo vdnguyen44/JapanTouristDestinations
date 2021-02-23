@@ -28,13 +28,21 @@ const seedDB = async () => {
             author: '6030ce331c53dc2d50443d8d',
             location: `${destinations[random16].city}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image: 'https://source.unsplash.com/collection/10458133',
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat nisi delectus nostrum rem quasi, id iusto, asperiores eligendi reprehenderit ut minus enim ipsa officia consectetur nihil non quo autem dolor. Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat nisi delectus nostrum rem quasi, id iusto, asperiores eligendi reprehenderit ut minus enim ipsa officia consectetur nihil non quo autem dolor.',
-            admissionfee
+            admissionfee,
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614069170/JapanTravelDestinations/ckyujrzjkfsrzsrn0af2.png',
+                    filename: 'JapanTravelDestinations/ckyujrzjkfsrzsrn0af2'
+                },
+                {
+                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614069171/JapanTravelDestinations/j9kpm5vvnxxtlnlczn8e.jpg',
+                    filename: 'JapanTravelDestinations/j9kpm5vvnxxtlnlczn8e'
+                }
+            ]
         })
         await site.save();
     }
-
 }
 
 // close database connection
