@@ -36,8 +36,8 @@ const seedDB = async () => {
                     filename: 'JapanTravelDestinations/ckyujrzjkfsrzsrn0af2'
                 },
                 {
-                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614069171/JapanTravelDestinations/j9kpm5vvnxxtlnlczn8e.jpg',
-                    filename: 'JapanTravelDestinations/j9kpm5vvnxxtlnlczn8e'
+                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614068721/JapanTravelDestinations/vnc9tthaif0jkmesljnm.jpg',
+                    filename: 'JapanTravelDestinations/vnc9tthaif0jkmesljnm'
                 }
             ]
         })
