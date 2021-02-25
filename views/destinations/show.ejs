@@ -3,6 +3,7 @@
 
     <div class="row">
         <div class="col-6">
+            <div id='map' style='width: 400px; height: 300px;'></div>
             <div id="destinationCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
                 <div class="carousel-inner">
                     <% destination.images.forEach((img, i)=> { %>
@@ -123,3 +124,9 @@
 
         <a href="/destinations">All Destinations</a>
     </footer>
+
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const destination = <%- JSON.stringify(destination) %>
+    </script>
+    <script src="/javascripts/showPageMap.js"></script>
