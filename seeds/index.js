@@ -39,12 +39,12 @@ const seedDB = async () => {
             },
             images: [
                 {
-                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614069170/JapanTravelDestinations/ckyujrzjkfsrzsrn0af2.png',
-                    filename: 'JapanTravelDestinations/ckyujrzjkfsrzsrn0af2'
+                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614315156/himeji_hq8gjt.png',
+                    filename: 'himeji_hq8gjt'
                 },
                 {
-                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614068721/JapanTravelDestinations/vnc9tthaif0jkmesljnm.jpg',
-                    filename: 'JapanTravelDestinations/vnc9tthaif0jkmesljnm'
+                    url: 'https://res.cloudinary.com/dsfriczq9/image/upload/v1614315170/japan-nara-todai-ji-temple_vzg8ke.jpg',
+                    filename: 'japan-nara-todai-ji-temple_vzg8ke'
                 }
             ]
         })
