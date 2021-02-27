@@ -20,10 +20,16 @@ const mongoSanitize = require('express-mongo-sanitize');
 const destinationRoutes = require('./routes/destinations');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
+
+const MongoStore = require('connect-mongo').default;
+
 const { contentSecurityPolicy } = require('helmet');
 
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/japan-travel-destinations';
+
 // minimum needed to connect japan-travel-destinations db running locally to default port 27017
-mongoose.connect('mongodb://localhost:27017/japan-travel-destinations',
+// 'mongodb://localhost:27017/japan-travel-destinations'
+mongoose.connect(dbUrl,
     {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -57,9 +63,21 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret';
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    secret,
+    touchAfter: 24* 60 * 60
+});
+store.on("error", function(e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
 const sessionConfig = {
+    store,
     name: 'session',
-    secret: 'thisshouldbeabettersecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
