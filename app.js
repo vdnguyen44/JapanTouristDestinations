@@ -25,8 +25,8 @@ const MongoStore = require('connect-mongo').default;
 
 const { contentSecurityPolicy } = require('helmet');
 
-// const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/japan-travel-destinations';
-const dbUrl = 'mongodb://localhost:27017/japan-travel-destinations';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/japan-travel-destinations';
+//const dbUrl = 'mongodb://localhost:27017/japan-travel-destinations';
 // minimum needed to connect japan-travel-destinations db running locally to default port 27017
 // 'mongodb://localhost:27017/japan-travel-destinations'
 mongoose.connect(dbUrl,
