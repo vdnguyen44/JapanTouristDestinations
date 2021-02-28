@@ -15,8 +15,10 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createDestination = async (req, res) => {
     const geoData = await geocoder.forwardGeocode({
-        query: req.body.destination.location,
-        limit: 1
+        query: req.body.destination.title,
+        limit: 1,
+        countries: ['jp'],
+        types: ["poi", "poi.landmark"]
     }).send();
 
     const destination = new Destination(req.body.destination);
@@ -56,8 +58,10 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateDestination = async (req, res) => {
     const { id } = req.params;
     const geoData = await geocoder.forwardGeocode({
-        query: req.body.destination.location,
-        limit: 1
+        query: req.body.destination.title,
+        limit: 1,
+        countries: ['jp'],
+        types: ["poi", "poi.landmark"]
     }).send();
     const destination = await Destination.findByIdAndUpdate(id, { ...req.body.destination });
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
