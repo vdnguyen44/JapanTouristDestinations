@@ -67,6 +67,19 @@ layout: {
 });
  
 
+map.addLayer({
+id: 'unclustered-point',
+type: 'circle',
+source: 'destinations',
+filter: ['!', ['has', 'point_count']],
+paint: {
+'circle-color': '#11b4da',
+'circle-radius': 4,
+'circle-stroke-width': 1,
+'circle-stroke-color': '#fff'
+}
+});
+
 // map.addLayer({
 // id: 'unclustered-point',
 // type: 'symbol',
