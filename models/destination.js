@@ -46,6 +46,10 @@ DestinationSchema.virtual('properties.popUpMarkUp').get(function () {
     return `<a href="/destinations/${this._id}">${this.title}</a>`;
 });
 
+DestinationSchema.virtual('properties.iconImage').get(function () {
+    return this.images[0].url;
+});
+
 DestinationSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {
         await Review.deleteMany({

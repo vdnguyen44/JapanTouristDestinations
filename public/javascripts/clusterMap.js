@@ -66,18 +66,23 @@ layout: {
 }
 });
  
-map.addLayer({
-id: 'unclustered-point',
-type: 'circle',
-source: 'destinations',
-filter: ['!', ['has', 'point_count']],
-paint: {
-'circle-color': '#11b4da',
-'circle-radius': 4,
-'circle-stroke-width': 1,
-'circle-stroke-color': '#fff'
-}
-});
+
+// map.addLayer({
+// id: 'unclustered-point',
+// type: 'symbol',
+// source: 'destinations',
+// filter: ['!', ['has', 'point_count']],
+// layout: {
+//     'icon-image': destinations.features[0].properties.iconImage
+// }
+
+// paint: {
+// 'circle-color': '#11b4da',
+// 'circle-radius': 10,
+// 'circle-stroke-width': 1,
+// 'circle-stroke-color': '#fff'
+// }
+// });
  
 // inspect a cluster on click
 map.on('click', 'clusters', function (e) {
@@ -105,6 +110,9 @@ zoom: zoom
 map.on('click', 'unclustered-point', function (e) {
 const {popUpMarkUp} = e.features[0].properties;
 const coordinates = e.features[0].geometry.coordinates.slice();
+map.flyTo({
+    center: e.features[0].geometry.coordinates
+    });
 
  
 // Ensure that if the map is zoomed out such that
@@ -126,4 +134,20 @@ map.getCanvas().style.cursor = 'pointer';
 map.on('mouseleave', 'clusters', function () {
 map.getCanvas().style.cursor = '';
 });
+
+// destinations.features.forEach(function (marker) {
+//     const el = document.createElement('div');
+//     el.className = 'marker';
+//     el.style.backgroundImage = `url(${destinations.features[0].properties.iconImage})`;
+//     el.style.width = "50px";
+//     el.style.height = "50px";
+
+//     new mapboxgl.Marker(el)
+// .setLngLat(marker.geometry.coordinates)
+// .addTo(map);
+// })
+
+
+
 });
+
